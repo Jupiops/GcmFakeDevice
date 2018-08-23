@@ -10,7 +10,7 @@ Gcm Fake Device is a tool to fake an Android Device and receive GCM messages
 
 ### Tech
 
-Dillinger uses a number of open source projects to work properly:
+Gcm Fake Device uses a number of open source projects to work properly:
 
 * [microG Services Core (GmsCore)] - HTML enhanced for web apps!
 * [json-simple] - awesome web-based text editor
@@ -41,10 +41,3 @@ MIT
    [microG Services Core (GmsCore)]: <https://github.com/microg/android_packages_apps_GmsCore>
    [json-simple]: <https://code.google.com/archive/p/json-simple/>
    [Protocol Buffers]: <https://developers.google.com/protocol-buffers/>
-
-   [PlDb]: <https://github.com/joemccann/dillinger/tree/master/plugins/dropbox/README.md>
-   [PlGh]: <https://github.com/joemccann/dillinger/tree/master/plugins/github/README.md>
-   [PlGd]: <https://github.com/joemccann/dillinger/tree/master/plugins/googledrive/README.md>
-   [PlOd]: <https://github.com/joemccann/dillinger/tree/master/plugins/onedrive/README.md>
-   [PlMe]: <https://github.com/joemccann/dillinger/tree/master/plugins/medium/README.md>
-   [PlGa]: <https://github.com/RahulHP/dillinger/blob/master/plugins/googleanalytics/README.md>
