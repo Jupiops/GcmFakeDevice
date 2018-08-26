@@ -35,17 +35,9 @@ public class FakeDevice {
     private static final String CHECKIN_URL = "https://android.clients.google.com/checkin";
     private static final String C2DM_REGISTER_URL = "https://android.clients.google.com/c2dm/register3";
 
-    /*
-    private static final String UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    private static final String LOWER = UPPER.toLowerCase(Locale.ROOT);
-    private static final String DIGITS = "0123456789";
-    private static final String ALPHANUM = UPPER + LOWER + DIGITS;
-    */
-
     private long androidId;
     private long securityToken;
     private Socket sslSocket;
-    //    private McsInputStream inputStream;
     private McsOutputStream outputStream;
     private ExecutorService executor;
 
