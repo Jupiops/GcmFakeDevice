@@ -1,8 +1,8 @@
 package net.jupiops.gcmfakedevice;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.protobuf.Message;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.microg.gms.gcm.mcs.Mcs;
 
 import java.io.Closeable;
@@ -89,8 +89,8 @@ public class McsInputStream extends Thread implements Closeable {
                     Mcs.DataMessageStanza messageStanza = ((Mcs.DataMessageStanza) message);
                     for (Mcs.AppData entry : messageStanza.getAppDataList()) {
                         if (entry.getKey().equalsIgnoreCase("payload")) ;
-                        JSONObject jObject = (JSONObject) new JSONParser().parse(entry.getValue());
-                        if (jObject.containsKey("server_time") && jObject.containsKey("verification_code"))
+                        JsonObject jObject = new JsonParser().parse(entry.getValue()).getAsJsonObject();
+                        if (jObject.has("server_time") && jObject.has("verification_code"))
                             System.out.println(jObject.get("server_time") + "\n" + jObject.get("verification_code"));
                         return true;
                     }

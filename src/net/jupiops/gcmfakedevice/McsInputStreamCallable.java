@@ -1,18 +1,22 @@
 package net.jupiops.gcmfakedevice;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import com.google.protobuf.Message;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.microg.gms.gcm.mcs.Mcs;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 import static org.microg.gms.gcm.mcs.McsConstants.*;
 
-public class McsInputStreamCallable implements Callable<JSONObject>, Closeable {
+public class McsInputStreamCallable implements Callable<Map<String, Object>>, Closeable {
     private static final String TAG = "GmsGcmMcsInput";
     private static final boolean DEBUG = false;
 
@@ -62,15 +66,15 @@ public class McsInputStreamCallable implements Callable<JSONObject>, Closeable {
     }
 
     @Override
-    public JSONObject call() {
+    public Map<String, Object> call() {
         try {
             while (!Thread.currentThread().isInterrupted() && !closed) {
                 Message msg = read();
                 if (msg != null) {
-                    JSONObject jsonObject;
-                    if ((jsonObject = handleInput(lastMsgTag, msg)) != null) {
+                    Map<String, Object> map;
+                    if ((map = handleInput(lastMsgTag, msg)) != null) {
                         is.close();
-                        return jsonObject;
+                        return map;
                     }
                 } else {
                     break; // if input is empty, do not continue looping
@@ -87,16 +91,18 @@ public class McsInputStreamCallable implements Callable<JSONObject>, Closeable {
         return null;
     }
 
-    private JSONObject handleInput(int type, Message message) {
+    private Map<String, Object> handleInput(int type, Message message) {
         try {
             switch (type) {
                 case MCS_DATA_MESSAGE_STANZA_TAG:
                     Mcs.DataMessageStanza messageStanza = ((Mcs.DataMessageStanza) message);
                     for (Mcs.AppData entry : messageStanza.getAppDataList()) {
                         if (entry.getKey().equalsIgnoreCase("payload")) ;
-                        JSONObject jObject = (JSONObject) new JSONParser().parse(entry.getValue());
-                        if (jObject.containsKey("server_time") && jObject.containsKey("verification_code")) {
-                            return jObject;
+                        JsonObject jObject = new JsonParser().parse(entry.getValue()).getAsJsonObject();
+                        if (jObject.has("server_time") && jObject.has("verification_code")) {
+                            Type t = new TypeToken<Map<String, Object>>() {
+                            }.getType();
+                            return new Gson().fromJson(jObject, t);
                         }
                     }
                     break;

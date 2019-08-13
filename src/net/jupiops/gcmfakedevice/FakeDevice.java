@@ -1,6 +1,5 @@
 package net.jupiops.gcmfakedevice;
 
-import org.json.simple.JSONObject;
 import org.microg.gms.checkin.CheckinProto;
 import org.microg.gms.gcm.mcs.Mcs;
 
@@ -259,7 +258,7 @@ public class FakeDevice {
     }
 
     public Map<String, Object> getGcmResponse() {
-        Future<JSONObject> future;
+        Future<Map<String, Object>> future;
 //        Map<String, String> returnMap = new HashMap<String, String>();
         try {
             sslSocket = createSSLSocket(FakeDevice.SERVICE_HOST, FakeDevice.SERVICE_PORT);
