@@ -16,7 +16,7 @@ import java.util.concurrent.Callable;
 
 import static org.microg.gms.gcm.mcs.McsConstants.*;
 
-public class McsInputStreamCallable implements Callable<Map<String, Object>>, Closeable {
+public class McsInputStreamCallable implements Callable<Map<String, String>>, Closeable {
     private static final String TAG = "GmsGcmMcsInput";
     private static final boolean DEBUG = false;
 
@@ -66,12 +66,12 @@ public class McsInputStreamCallable implements Callable<Map<String, Object>>, Cl
     }
 
     @Override
-    public Map<String, Object> call() {
+    public Map<String, String> call() {
         try {
             while (!Thread.currentThread().isInterrupted() && !closed) {
                 Message msg = read();
                 if (msg != null) {
-                    Map<String, Object> map;
+                    Map<String, String> map;
                     if ((map = handleInput(lastMsgTag, msg)) != null) {
                         is.close();
                         return map;
@@ -91,7 +91,7 @@ public class McsInputStreamCallable implements Callable<Map<String, Object>>, Cl
         return null;
     }
 
-    private Map<String, Object> handleInput(int type, Message message) {
+    private Map<String, String> handleInput(int type, Message message) {
         try {
             switch (type) {
                 case MCS_DATA_MESSAGE_STANZA_TAG:
@@ -100,7 +100,7 @@ public class McsInputStreamCallable implements Callable<Map<String, Object>>, Cl
                         if (entry.getKey().equalsIgnoreCase("payload")) ;
                         JsonObject jObject = new JsonParser().parse(entry.getValue()).getAsJsonObject();
                         if (jObject.has("server_time") && jObject.has("verification_code")) {
-                            Type t = new TypeToken<Map<String, Object>>() {
+                            Type t = new TypeToken<Map<String, String>>() {
                             }.getType();
                             return new Gson().fromJson(jObject, t);
                         }
@@ -119,6 +119,7 @@ public class McsInputStreamCallable implements Callable<Map<String, Object>>, Cl
                     break;
             }
         } catch (Exception e) {
+            if (DEBUG) e.printStackTrace();
         }
         return null;
     }

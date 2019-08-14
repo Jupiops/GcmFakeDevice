@@ -257,8 +257,8 @@ public class FakeDevice {
         return null;
     }
 
-    public Map<String, Object> getGcmResponse() {
-        Future<Map<String, Object>> future;
+    public Map<String, String> getGcmResponse() {
+        Future<Map<String, String>> future;
 //        Map<String, String> returnMap = new HashMap<String, String>();
         try {
             sslSocket = createSSLSocket(FakeDevice.SERVICE_HOST, FakeDevice.SERVICE_PORT);
@@ -268,6 +268,7 @@ public class FakeDevice {
             outputStream.handleMessage(MSG_OUTPUT, MCS_LOGIN_REQUEST_TAG, buildLoginRequest(androidId, securityToken));
             return future.get();
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }

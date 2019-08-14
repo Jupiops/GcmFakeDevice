@@ -12,8 +12,11 @@ public class test {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        for (Map.Entry<String, Object> entry : fakeDevice.getGcmResponse().entrySet()) {
-            System.out.println(entry.getKey() + ":" + String.valueOf(entry.getValue()));
+
+        Map<String, String> map = fakeDevice.getGcmResponse();
+
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
         }
         fakeDevice.closeAll();
     }

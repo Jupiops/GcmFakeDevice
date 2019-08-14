@@ -108,6 +108,7 @@ public class McsInputStream extends Thread implements Closeable {
                     break;
             }
         } catch (Exception e) {
+            if (DEBUG) e.printStackTrace();
         }
         return false;
     }
